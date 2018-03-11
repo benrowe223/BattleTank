@@ -1,6 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank.h"
+#include "TankBarrel.h"
+#include "Projectile.h"
+
+
+
 
 
 // Sets default values
@@ -16,11 +21,24 @@ ATank::ATank()
 void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
+	Barrel = BarrelToSet;
 }
 
 void ATank::SetTurretReference(UTankTurret* TurretToSet)
 {
 	TankAimingComponent->SetTurretReference(TurretToSet);
+}
+
+void ATank::Fire()
+{
+	if (!Barrel)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No barrel set in Tank blueprint"));
+		return;
+	}
+
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBluePrint, Barrel->GetSocketLocation("Projectile"), Barrel->GetSocketRotation("Projectile"));
+	Projectile->LaunchProjectile(LaunchSpeed);
 }
 
 // Called when the game starts or when spawned
