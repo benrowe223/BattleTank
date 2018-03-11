@@ -45,4 +45,9 @@ private:
 	TSubclassOf<AProjectile> ProjectileBluePrint; // TODO find sensible default
 
 	UTankBarrel* Barrel = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+		float ReloadTimeInSeconds = 3;
+
+	double LastFireTime = 0;
 };

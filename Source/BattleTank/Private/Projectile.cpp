@@ -10,7 +10,6 @@ AProjectile::AProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovement>(FName("Projectile movement component"));
 	ProjectileMovementComponent->bAutoActivate = false;
-
 }
 
 void AProjectile::LaunchProjectile(float Speed)
