@@ -18,4 +18,11 @@ private:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
+
+	UPROPERTY(EditAnywhere, Category = Movement)
+	float AcceptanceRadius = 3000; // How close can the AI tank get to the player before stopping.
+protected:
+
+public:
+
 };
