@@ -5,8 +5,6 @@
 
 void UTankMovementComponent::Initialize(UTankTrack * LeftTrackToSet, UTankTrack * RightTrackToSet)
 {
-
-
 	LeftTrack = LeftTrackToSet;
 	RightTrack = RightTrackToSet;
 }
@@ -31,31 +29,20 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 	auto ThrowRequired = FVector::DotProduct(TankForward, AIForwardIntention);
 	IntendMoveForwardBackward(ThrowRequired);
 	IntendTurnLeftRight(RotationThrowRequired.Z);
-	//UE_LOG(LogTemp, Warning, TEXT("%s Attempted Move Velocity: %s"), *Name, *MoveVelocity.ToString());
 }
 
 
 void UTankMovementComponent::IntendMoveForwardBackward(float Throw)
 {
-	if (!LeftTrack || !RightTrack)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Movement component cannot set tracks. One of the tracks is null, please set this via blueprint"));
-		return;
-	}
+	if (!ensure(LeftTrack && RightTrack)) { return; }
 
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(Throw);
-
-	//TODO: prevent double speed due to dual control use
 }
 
 void UTankMovementComponent::IntendTurnLeftRight(float Throw)
 {
-	if (!LeftTrack || !RightTrack)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Movement component cannot set tracks. One of the tracks is null, please set this via blueprint"));
-		return;
-	}
+	if (!ensure(LeftTrack && RightTrack)) {	return;}
 
 	LeftTrack->SetThrottle(-Throw);
 	RightTrack->SetThrottle(Throw);

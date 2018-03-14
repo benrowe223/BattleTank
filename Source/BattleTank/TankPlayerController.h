@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "Tank.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h" // Must be the last include
 
@@ -41,9 +40,7 @@ private:
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const;
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	ATank * GetControlledTank() const;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
-		void FoundAmingComponent(UTankAimingComponent* AimingComponentRef);
+	void FoundAmingComponent(UTankAimingComponent* AimingComponentRef);
 };
