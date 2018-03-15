@@ -12,7 +12,8 @@ enum class EFiringStatus : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	OutOfAmmo
 };
 // Forward Declaration
 class UTankBarrel;
@@ -29,15 +30,22 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-		void Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	int GetRoundsLeft() const;
 
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+		void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float ReloadTimeInSeconds = 3;
 	// TODO add SetTurretReference
 
 	void AimAt(FVector HitLocation);
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 	void Fire();
+
+	EFiringStatus GetFiringState() const;
 
 protected:
 
@@ -48,10 +56,14 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	double LastFireTime = 0;
+
 private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
-
+	
+	int RoundsLeft = 3;
 	FVector CurrentAimDirection;
 
 	bool IsBarrelMoving();
@@ -61,11 +73,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float LaunchSpeed = 4000;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float ReloadTimeInSeconds = 3;
-
-	double LastFireTime = 0;
 
 	void MoveBarrelTowards(FVector AimDirection);
 };
